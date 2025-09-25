@@ -37,7 +37,8 @@ func main() {
 		fmt.Println("\n--- Bank Menu ---")
 		fmt.Println("1. Create an account")
 		fmt.Println("2. Show all accounts")
-		fmt.Println("3. Exit")
+		fmt.Println("3. Deposite to your account")
+		fmt.Println("4. Exit")
 		fmt.Print("What can I do for You?")
 		//awaiting the user's choice
 
@@ -66,7 +67,41 @@ func main() {
 					fmt.Printf("%d. %s - Balance: %2f\n", i+1, account.Owner, account.Balance)
 				}
 			}
+
 		case 3:
+			if len(accounts) == 0 {
+				fmt.Println("No accounts has been created yet")
+				break
+			}
+			var name string
+			fmt.Println("What account do you want to deposite in?")
+			fmt.Scan(&name)
+			//searching for the name
+			found := false
+			for i := 0; i < len(accounts); i++ {
+				if accounts[i].Owner == name {
+					//if the account is found asking or the amount
+					var amount float64
+					fmt.Print("Write the amount of money to deposite: ")
+					fmt.Scan(&amount)
+
+					// checking if the number is positive
+					if amount <= 0 {
+						fmt.Println("The number shall be more than 0")
+						break
+					}
+					//increasing the balance
+					accounts[i].Balance += amount
+					fmt.Printf("Account balance %s increased by %.2f. Current balance: %2.f\n", name, amount, accounts[i].Balance)
+
+					found = true
+					break
+				}
+			}
+			if !found {
+				fmt.Println("There is no such account on the list")
+			}
+		case 4:
 			fmt.Println("Good bye!")
 			return //it is used to close the program
 
