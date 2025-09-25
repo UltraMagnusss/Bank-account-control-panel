@@ -29,33 +29,26 @@ func Transfer(from *Account, to *Account, amount float64) bool {
 }
 
 func main() {
-	acc1 := Account{Owner: "Ahmad", Balance: 2500}
-	acc2 := Account{Owner: "Muhammad", Balance: 1500}
+	for { // Createed a cycle for an infinity menu
+		//Typing the menu
+		fmt.Println("Menu:")
+		fmt.Println("1. Create account")
+		fmt.Println("2. Exit")
 
-	fmt.Println("Availible balances:")
-	fmt.Printf("%s: %.2f\n", acc1.Owner, acc1.Balance)
-	fmt.Printf("%s: %.2f\n", acc2.Owner, acc2.Balance)
+		//awaiting the user's choice
+		var choice int
+		fmt.Println("Choose the action: ")
+		fmt.Scan(&choice) //reading the number, the user write
 
-	acc1.Deposit(250)
-	fmt.Printf("After the deposit %s: %2f\n", acc1.Owner, acc1.Balance)
+		//analyzing the choice
+		if choice == 1 {
+			fmt.Println("Creating the new account...") //here will be code writen after a while
+		} else if choice == 2 {
+			fmt.Println("Good bye!")
+			break //exit from the cycle, program shut down
+		} else {
+			fmt.Println("Wrong number, Try again!")
+		}
 
-	success := acc1.Withdraw(350)
-	if success {
-		fmt.Println("Withdraw has completed successfuly")
-	} else {
-		fmt.Println("Not enough money on the account")
 	}
-
-	fmt.Printf("After withdraw %s: %2f\n", acc1.Owner, acc1.Balance)
-
-	success = Transfer(&acc1, &acc2, 350)
-	if success {
-		fmt.Println("Transfer has completed successfuly")
-	} else {
-		fmt.Println("Not enough money on account")
-	}
-
-	fmt.Println("After the transfer:")
-	fmt.Printf("%s: %.2f\n", acc1.Owner, acc1.Balance)
-	fmt.Printf("%s: %.2f\n", acc2.Owner, acc2.Balance)
 }
