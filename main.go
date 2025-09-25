@@ -35,8 +35,9 @@ func main() {
 	for { // Createed a cycle for an infinity menu
 		//Typing the menu
 		fmt.Println("\n--- Bank Menu ---")
-		fmt.Println("1. Create account")
-		fmt.Println("2. Exit")
+		fmt.Println("1. Create an account")
+		fmt.Println("2. Show all accounts")
+		fmt.Println("3. Exit")
 		fmt.Print("What can I do for You?")
 		//awaiting the user's choice
 
@@ -44,7 +45,9 @@ func main() {
 		fmt.Scan(&choice) //reading the number, the user write
 
 		//analyzing the choice
-		if choice == 1 {
+		switch choice {
+		case 1:
+
 			var name string
 			fmt.Println("Creating the new account...")
 			fmt.Println("Write your full name down")
@@ -53,12 +56,23 @@ func main() {
 			accounts = append(accounts, acc)        // added the created account to the slice
 
 			fmt.Printf("Account for %s successfuly created! Balance %2f\n", name, acc.Balance) // displaying the confirmation massage to the user
-		} else if choice == 2 {
-			fmt.Println("Good bye!")
-			break //exit from the cycle, program shut down
-		} else {
-			fmt.Println("Wrong number, Try again!")
-		}
 
+		case 2:
+			if len(accounts) == 0 {
+				fmt.Println("No accounts has been created yet")
+			} else {
+				fmt.Println("\n The list of the accounts")
+				for i, account := range accounts {
+					fmt.Printf("%d. %s - Balance: %2f\n", i+1, account.Owner, account.Balance)
+				}
+			}
+		case 3:
+			fmt.Println("Good bye!")
+			return //it is used to close the program
+
+		default:
+			fmt.Println("Wrong number, Try again!")
+
+		}
 	}
 }
