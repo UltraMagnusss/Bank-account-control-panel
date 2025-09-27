@@ -95,7 +95,7 @@ func main() {
 			found := false
 			for i := 0; i < len(accounts); i++ {
 				if accounts[i].Owner == name {
-					found = true
+					found = true // if we found the account name found will be true
 					//if the account is found asking or the amount
 					var amount float64
 					fmt.Printf("Write the amount of money to withdraw: \n")
@@ -116,15 +116,16 @@ func main() {
 					break
 				}
 			}
-			if !found {
+			if !found { //if we still don't found the account it will tell us
 				fmt.Println("There is no such account on the list!!!")
 			}
 
 		case 5:
-			if len(accounts) < 2 {
+			if len(accounts) < 2 { // checking if there is 2 accounts to start a transfer
 				fmt.Println("There shall be atleast 2 accounts for transfer")
 				break
 			}
+			//getting the sender and the receiver account names
 			var nameSender, nameReciever string
 
 			fmt.Print("Wrtite the name of the account you want to transfer from! \n")
@@ -132,15 +133,15 @@ func main() {
 			fmt.Print("Wrtite the name of the account you want to transfer to! \n")
 			fmt.Scan(&nameReciever)
 			fmt.Print("Print the amount of money you want to transfer \n")
-
+			//getting the amount of the money we want to transfer
 			var amount float64
 			fmt.Scan(&amount)
-
+			// it is need to check the presence of the accounts on the list
 			senderIndex := -1
 			receiverIndex := -1
 
 			for i, account := range accounts {
-
+				// in this cycle we asure that there is such names on the list, and if so we mark them as indexes on the list that we have
 				if account.Owner == nameSender {
 					senderIndex = i
 				}
@@ -149,7 +150,7 @@ func main() {
 					receiverIndex = i
 				}
 
-			}
+			} //then we check for mistakes and errors with the givven datas such as sender name, receiver name and the amount of money to transfer
 			if senderIndex == -1 {
 				fmt.Print("The account you want to transfer from has not found!!!")
 				break
@@ -174,15 +175,15 @@ func main() {
 				fmt.Print("There is no enough money on the account you want to transfer from!!!")
 				break
 			}
-
+			//here we - the amount from sender balance and + the amount to the receiver balance
 			accounts[senderIndex].Balance -= amount
 			accounts[receiverIndex].Balance += amount
-
+			// showing the success massage and the new balances for each account after the transfer
 			fmt.Printf("Transfer by %.2f$ from account '%s' --to--> account '%s' has completed successfuly! \n", amount, accounts[senderIndex].Owner, accounts[receiverIndex].Owner)
 			fmt.Printf("New balances \n %s: %.2f$ \n %s: %.2f$", accounts[senderIndex].Owner, accounts[senderIndex].Balance, accounts[receiverIndex].Owner, accounts[receiverIndex].Balance)
 
 		case 6:
-			fmt.Println("Thank you for baknig with us!")
+			fmt.Println("Thank you for bankig with us!")
 			return //it is used to close the program
 
 		default:
