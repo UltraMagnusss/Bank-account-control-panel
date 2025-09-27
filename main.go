@@ -3,29 +3,9 @@ package main
 import "fmt"
 
 type Account struct {
-	Owner   string
-	Balance float64
-}
-
-func (a *Account) Deposit(amount float64) {
-	a.Balance += amount
-}
-
-func (a *Account) Withdraw(amount float64) bool {
-	if a.Balance < amount {
-		return false
-	}
-	a.Balance -= amount
-	return true
-}
-
-func Transfer(from *Account, to *Account, amount float64) bool {
-	success := from.Withdraw(amount)
-	if success {
-		to.Deposit(amount)
-		return true
-	}
-	return false
+	Owner    string
+	Balance  float64
+	password string
 }
 
 func main() {
@@ -39,7 +19,8 @@ func main() {
 		fmt.Println("2. Show all accounts")
 		fmt.Println("3. Deposite cash to your account")
 		fmt.Println("4. Withdraw cash from your account")
-		fmt.Println("5. Exit")
+		fmt.Println("5. Transfer money from one account to another")
+		fmt.Println("6. Exit")
 		fmt.Print("What can I do for You?")
 		//awaiting the user's choice
 
@@ -75,7 +56,7 @@ func main() {
 				break
 			}
 			var name string
-			fmt.Println("What account do you want to deposite in?")
+			fmt.Printf("What account do you want to deposite in? \n")
 			fmt.Scan(&name)
 			//searching for the name
 			found := false
@@ -83,7 +64,7 @@ func main() {
 				if accounts[i].Owner == name {
 					//if the account is found asking or the amount
 					var amount float64
-					fmt.Print("Write the amount of money to deposite: ")
+					fmt.Printf("Write the amount of money to deposite: \n")
 					fmt.Scan(&amount)
 
 					// checking if the number is positive
@@ -93,7 +74,7 @@ func main() {
 					}
 					//increasing the balance
 					accounts[i].Balance += amount
-					fmt.Printf("Account balance %s increased by %.2f&. Current balance: %2.f$\n", name, amount, accounts[i].Balance)
+					fmt.Printf("Balance for the account '%s' increased by %.2f&. Current balance: %2.f$\n", name, amount, accounts[i].Balance)
 
 					found = true
 					break
@@ -108,7 +89,7 @@ func main() {
 				break
 			}
 			var name string
-			fmt.Println("What account do you want to withdraw from?")
+			fmt.Printf("What account do you want to withdraw from? \n")
 			fmt.Scan(&name)
 			//searching for the name
 			found := false
@@ -117,7 +98,7 @@ func main() {
 					found = true
 					//if the account is found asking or the amount
 					var amount float64
-					fmt.Print("Write the amount of money to withdraw: ")
+					fmt.Printf("Write the amount of money to withdraw: \n")
 					fmt.Scan(&amount)
 
 					// checking if the number is positive or is there enough money to withdraw
@@ -130,7 +111,7 @@ func main() {
 					} else {
 						//decreasing the balance
 						accounts[i].Balance -= amount
-						fmt.Printf("Account balance %s decreased by %.2f.$ Current balance: %2.f$\n", name, amount, accounts[i].Balance)
+						fmt.Printf("Balance for the account '%s' decreased by %.2f$ Current balance: %2.f$\n", name, amount, accounts[i].Balance)
 					}
 					break
 				}
@@ -140,7 +121,68 @@ func main() {
 			}
 
 		case 5:
-			fmt.Println("Good bye!")
+			if len(accounts) < 2 {
+				fmt.Println("There shall be atleast 2 accounts for transfer")
+				break
+			}
+			var nameSender, nameReciever string
+
+			fmt.Print("Wrtite the name of the account you want to transfer from! \n")
+			fmt.Scan(&nameSender)
+			fmt.Print("Wrtite the name of the account you want to transfer to! \n")
+			fmt.Scan(&nameReciever)
+			fmt.Print("Print the amount of money you want to transfer \n")
+
+			var amount float64
+			fmt.Scan(&amount)
+
+			senderIndex := -1
+			receiverIndex := -1
+
+			for i, account := range accounts {
+
+				if account.Owner == nameSender {
+					senderIndex = i
+				}
+
+				if account.Owner == nameReciever {
+					receiverIndex = i
+				}
+
+			}
+			if senderIndex == -1 {
+				fmt.Print("The account you want to transfer from has not found!!!")
+				break
+			}
+
+			if receiverIndex == -1 {
+				fmt.Print("The account you want to transfer to has not found!!!")
+				break
+			}
+
+			if senderIndex == receiverIndex {
+				fmt.Print("You can not transfer money FROM and TO the same account!!!")
+				break
+			}
+
+			if amount <= 0 {
+				fmt.Print("The number of transfer should be more than 0 !!!")
+				break
+			}
+
+			if accounts[senderIndex].Balance < amount {
+				fmt.Print("There is no enough money on the account you want to transfer from!!!")
+				break
+			}
+
+			accounts[senderIndex].Balance -= amount
+			accounts[receiverIndex].Balance += amount
+
+			fmt.Printf("Transfer by %.2f$ from account '%s' --to--> account '%s' has completed successfuly! \n", amount, accounts[senderIndex].Owner, accounts[receiverIndex].Owner)
+			fmt.Printf("New balances \n %s: %.2f$ \n %s: %.2f$", accounts[senderIndex].Owner, accounts[senderIndex].Balance, accounts[receiverIndex].Owner, accounts[receiverIndex].Balance)
+
+		case 6:
+			fmt.Println("Thank you for baknig with us!")
 			return //it is used to close the program
 
 		default:
